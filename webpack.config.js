@@ -8,7 +8,7 @@ module.exports = {
   output: {
     path: path.resolve(__dirname, 'dist'),
     filename: 'index.js',
-    publicPath: './',
+    publicPath: process.env.NODE_ENV === 'production' ? '/rork-jiu-jitsu-training-tracker/' : './',
     clean: true,
   },
   resolve: {
@@ -35,6 +35,14 @@ module.exports = {
             plugins: [
               '@babel/plugin-proposal-class-properties',
               '@babel/plugin-transform-runtime',
+              [
+                'module-resolver',
+                {
+                  alias: {
+                    '@': './',
+                  },
+                },
+              ],
             ],
           },
         },
