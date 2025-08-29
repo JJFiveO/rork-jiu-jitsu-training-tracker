@@ -20,6 +20,9 @@ jobs:
         node-version: '18'
         cache: 'npm'
         
+    - name: Setup web package.json
+      run: cp package-web.json package.json
+      
     - name: Install dependencies
       run: npm install
       

@@ -56,6 +56,23 @@ module.exports = {
     ],
   },
   plugins: [
+    new HtmlWebpackPlugin({
+      template: './index.html',
+      filename: 'index.html',
+      inject: true,
+      minify: {
+        removeComments: true,
+        collapseWhitespace: true,
+        removeRedundantAttributes: true,
+        useShortDoctype: true,
+        removeEmptyAttributes: true,
+        removeStyleLinkTypeAttributes: true,
+        keepClosingSlash: true,
+        minifyJS: true,
+        minifyCSS: true,
+        minifyURLs: true,
+      },
+    }),
     new DefinePlugin({
       __DEV__: JSON.stringify(false),
       'process.env.NODE_ENV': JSON.stringify('production'),

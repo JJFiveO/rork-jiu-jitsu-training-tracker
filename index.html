@@ -92,7 +92,7 @@
     </div>
   </div>
   
-  <script type="module">
+  <script>
     // Error handling
     window.addEventListener('error', (e) => {
       console.error('Application error:', e.error);
@@ -106,24 +106,17 @@
     
     function showError(message) {
       const root = document.getElementById('root');
-      root.innerHTML = `
-        <div class="error">
-          <h1>Oops! Something went wrong</h1>
-          <p>${message}</p>
-          <button class="retry-btn" onclick="window.location.reload()">Retry</button>
-        </div>
-      `;
+      root.innerHTML = 
+        '<div class="error">' +
+          '<h1>Oops! Something went wrong</h1>' +
+          '<p>' + message + '</p>' +
+          '<button class="retry-btn" onclick="window.location.reload()">Retry</button>' +
+        '</div>';
     }
     
     // Check for modern browser features
     if (!window.fetch || !window.Promise || !window.Map || !window.Set) {
       showError('Your browser is not supported. Please use a modern browser like Chrome, Firefox, Safari, or Edge.');
-    } else {
-      // Load the main application
-      import('./dist/index.js').catch(err => {
-        console.error('Failed to load application:', err);
-        showError('Failed to load the application. Please check your internet connection and try again.');
-      });
     }
   </script>
 </body>
