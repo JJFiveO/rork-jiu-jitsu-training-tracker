@@ -19,6 +19,7 @@ export const [TimerProvider, useTimer] = createContextHook(() => {
   const [isPaused, setIsPaused] = useState(false);
   const [soundsEnabled, setSoundsEnabled] = useState(true);
 
+  // All useRef calls must come before useCallback calls
   const intervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
   const audioContext = useRef<AudioContext | null>(null);
 

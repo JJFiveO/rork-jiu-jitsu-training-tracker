@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, ScrollView, TextInput, Platform } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Play, Pause, RotateCcw, Settings, X, Volume2, VolumeX } from 'lucide-react-native';
@@ -23,7 +23,11 @@ export default function TimerScreen() {
   } = useTimer();
 
   const [showSettings, setShowSettings] = useState(false);
-  const [tempSettings, setTempSettings] = useState(settings);
+  const [tempSettings, setTempSettings] = useState(() => settings);
+
+  useEffect(() => {
+    setTempSettings(settings);
+  }, [settings]);
 
   const formatTime = (seconds: number) => {
     const mins = Math.floor(seconds / 60);
