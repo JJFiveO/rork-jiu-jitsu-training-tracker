@@ -3,8 +3,6 @@ name: Deploy to GitHub Pages
 on:
   push:
     branches: [ main, master ]
-  pull_request:
-    branches: [ main, master ]
 
 jobs:
   build-and-deploy:
@@ -18,13 +16,9 @@ jobs:
       uses: actions/setup-node@v4
       with:
         node-version: '18'
-        cache: 'npm'
         
     - name: Setup web package.json
       run: cp package-web.json package.json
-      
-    - name: Create package-lock.json
-      run: npm install --package-lock-only
       
     - name: Install dependencies
       run: npm install
