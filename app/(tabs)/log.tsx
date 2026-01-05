@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { View, Text, StyleSheet, ScrollView, TouchableOpacity, Alert } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useRouter } from 'expo-router';
-import { Plus, Calendar, Filter } from 'lucide-react-native';
+import { Plus, Calendar } from 'lucide-react-native';
 import { useTraining } from '@/hooks/training-context';
 import { SessionCard } from '@/components/SessionCard';
 import { TrainingSession } from '@/types/training';
@@ -31,7 +31,7 @@ export default function LogScreen() {
     );
   };
 
-  const filterOptions: Array<{ value: TrainingSession['type'] | 'all'; label: string }> = [
+  const filterOptions: { value: TrainingSession['type'] | 'all'; label: string }[] = [
     { value: 'all', label: 'All' },
     { value: 'gi', label: 'Gi' },
     { value: 'no-gi', label: 'No-Gi' },
@@ -79,7 +79,7 @@ export default function LogScreen() {
             <SessionCard
               key={session.id}
               session={session}
-              onEdit={() => router.push(`/edit-session?id=${session.id}`)}
+              onEdit={() => router.push({ pathname: '/edit-session', params: { id: session.id } } as any)}
               onDelete={() => handleDelete(session.id)}
             />
           ))
@@ -98,7 +98,7 @@ export default function LogScreen() {
 
       <TouchableOpacity 
         style={styles.fab}
-        onPress={() => router.push('/add-session')}
+        onPress={() => router.push({ pathname: '/add-session' } as any)}
       >
         <Plus size={28} color="#fff" />
       </TouchableOpacity>
