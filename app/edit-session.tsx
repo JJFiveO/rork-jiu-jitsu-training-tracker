@@ -7,9 +7,15 @@ import { useTraining } from '@/hooks/training-context';
 import { TrainingSession } from '@/types/training';
 import * as Haptics from 'expo-haptics';
 
-export default function EditSessionScreen() {
+type Props = {
+  sessionId?: string;
+  onClose?: () => void;
+};
+
+export default function EditSessionScreen({ sessionId, onClose }: Props = {}) {
   const router = useRouter();
-  const { id } = useLocalSearchParams();
+  const params = useLocalSearchParams();
+  const id = sessionId || params.id;
   const { sessions, updateSession } = useTraining();
 
   const session = sessions.find(s => s.id === id);
@@ -30,7 +36,7 @@ export default function EditSessionScreen() {
     }
   }, [session]);
 
-  const trainingTypes: Array<{ value: TrainingSession['type']; label: string; color: string }> = [
+  const trainingTypes: { value: TrainingSession['type']; label: string; color: string }[] = [
     { value: 'gi', label: 'Gi Training', color: '#07a7f7' },
     { value: 'no-gi', label: 'No-Gi', color: '#8B4513' },
     { value: 'open-mat', label: 'Open Mat', color: '#32CD32' },
@@ -64,7 +70,11 @@ export default function EditSessionScreen() {
       Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
     }
 
-    router.back();
+    if (onClose) {
+      onClose();
+    } else {
+      router.back();
+    }
   };
 
   if (!session) {

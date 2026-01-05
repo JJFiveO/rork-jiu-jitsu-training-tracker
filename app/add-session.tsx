@@ -7,7 +7,11 @@ import { useTraining } from '@/hooks/training-context';
 import { TrainingSession } from '@/types/training';
 import * as Haptics from 'expo-haptics';
 
-export default function AddSessionScreen() {
+type Props = {
+  onClose?: () => void;
+};
+
+export default function AddSessionScreen({ onClose }: Props = {}) {
   const router = useRouter();
   const { addSession } = useTraining();
 
@@ -17,7 +21,7 @@ export default function AddSessionScreen() {
   const [notes, setNotes] = useState('');
   const [techniques, setTechniques] = useState('');
 
-  const trainingTypes: Array<{ value: TrainingSession['type']; label: string; color: string }> = [
+  const trainingTypes: { value: TrainingSession['type']; label: string; color: string }[] = [
     { value: 'gi', label: 'Gi Training', color: '#07a7f7' },
     { value: 'no-gi', label: 'No-Gi', color: '#8B4513' },
     { value: 'open-mat', label: 'Open Mat', color: '#32CD32' },
@@ -49,7 +53,11 @@ export default function AddSessionScreen() {
       Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
     }
 
-    router.back();
+    if (onClose) {
+      onClose();
+    } else {
+      router.back();
+    }
   };
 
   return (
