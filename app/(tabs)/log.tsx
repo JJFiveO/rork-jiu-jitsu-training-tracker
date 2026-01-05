@@ -7,12 +7,7 @@ import { useTraining } from '@/hooks/training-context';
 import { SessionCard } from '@/components/SessionCard';
 import { TrainingSession } from '@/types/training';
 
-type Props = {
-  onAddSession?: () => void;
-  onEditSession?: (id: string) => void;
-};
-
-export default function LogScreen({ onAddSession, onEditSession }: Props = {}) {
+export default function LogScreen() {
   const router = useRouter();
   const { sessions, deleteSession } = useTraining();
   const [filterType, setFilterType] = useState<TrainingSession['type'] | 'all'>('all');
@@ -84,13 +79,7 @@ export default function LogScreen({ onAddSession, onEditSession }: Props = {}) {
             <SessionCard
               key={session.id}
               session={session}
-              onEdit={() => {
-                if (onEditSession) {
-                  onEditSession(session.id);
-                } else {
-                  router.push({ pathname: '/edit-session', params: { id: session.id } } as any);
-                }
-              }}
+              onEdit={() => router.push(`/edit-session?id=${session.id}`)}
               onDelete={() => handleDelete(session.id)}
             />
           ))
@@ -109,13 +98,7 @@ export default function LogScreen({ onAddSession, onEditSession }: Props = {}) {
 
       <TouchableOpacity 
         style={styles.fab}
-        onPress={() => {
-          if (onAddSession) {
-            onAddSession();
-          } else {
-            router.push({ pathname: '/add-session' } as any);
-          }
-        }}
+        onPress={() => router.push('/add-session')}
       >
         <Plus size={28} color="#fff" />
       </TouchableOpacity>

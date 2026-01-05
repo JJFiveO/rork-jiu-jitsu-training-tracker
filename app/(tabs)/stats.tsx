@@ -43,7 +43,7 @@ export default function StatsScreen() {
 
   const trainingByType = getTrainingByType();
 
-  const periods: Array<{ value: Period; label: string }> = [
+  const periods: { value: Period; label: string }[] = [
     { value: 'week', label: 'Week' },
     { value: 'month', label: 'Month' },
     { value: 'year', label: 'Year' },
@@ -61,11 +61,11 @@ export default function StatsScreen() {
 
   const typeColors: Record<string, string> = {
     'gi': '#07a7f7',
-    'no-gi': '#666',
-    'open-mat': '#777',
-    'competition': '#888',
-    'drilling': '#999',
-    'private': '#aaa',
+    'no-gi': '#8B4513',
+    'open-mat': '#32CD32',
+    'competition': '#DC2626',
+    'drilling': '#9333EA',
+    'private': '#F59E0B',
   };
 
   return (

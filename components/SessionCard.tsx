@@ -100,7 +100,7 @@ export const SessionCard: React.FC<SessionCardProps> = ({
 
 const styles = StyleSheet.create({
   card: {
-    backgroundColor: '#2a2a2a',
+    backgroundColor: '#1a1a1a',
     borderRadius: 12,
     flexDirection: 'row',
     overflow: 'hidden',
@@ -157,7 +157,7 @@ const styles = StyleSheet.create({
     marginTop: 8,
   },
   technique: {
-    backgroundColor: '#3a3a3a',
+    backgroundColor: '#262626',
     paddingHorizontal: 8,
     paddingVertical: 4,
     borderRadius: 6,

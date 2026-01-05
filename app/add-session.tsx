@@ -7,11 +7,7 @@ import { useTraining } from '@/hooks/training-context';
 import { TrainingSession } from '@/types/training';
 import * as Haptics from 'expo-haptics';
 
-type Props = {
-  onClose?: () => void;
-};
-
-export default function AddSessionScreen({ onClose }: Props = {}) {
+export default function AddSessionScreen() {
   const router = useRouter();
   const { addSession } = useTraining();
 
@@ -53,11 +49,7 @@ export default function AddSessionScreen({ onClose }: Props = {}) {
       Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
     }
 
-    if (onClose) {
-      onClose();
-    } else {
-      router.back();
-    }
+    router.back();
   };
 
   return (

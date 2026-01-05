@@ -1,7 +1,7 @@
 import createContextHook from '@nkzw/create-context-hook';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import { useState, useEffect, useMemo } from 'react';
+import { useState, useEffect } from 'react';
 import { TrainingSession, TrainingStats } from '@/types/training';
 
 const STORAGE_KEY = 'training_sessions';
@@ -82,7 +82,6 @@ export const [TrainingProvider, useTraining] = createContextHook(() => {
     const sessionsCount = filteredSessions.length;
     const averageSessionLength = sessionsCount > 0 ? totalMinutes / sessionsCount : 0;
 
-    // Calculate streaks
     const sortedSessions = [...sessions].sort((a, b) => 
       new Date(b.date).getTime() - new Date(a.date).getTime()
     );

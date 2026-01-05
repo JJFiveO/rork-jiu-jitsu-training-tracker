@@ -7,12 +7,7 @@ import { useTraining } from '@/hooks/training-context';
 import { StatCard } from '@/components/StatCard';
 import { SessionCard } from '@/components/SessionCard';
 
-type Props = {
-  onAddSession?: () => void;
-  onEditSession?: (id: string) => void;
-};
-
-export default function DashboardScreen({ onAddSession, onEditSession }: Props = {}) {
+export default function DashboardScreen() {
   const router = useRouter();
   const { getTodaySessions, getStats, sessions } = useTraining();
   const todaySessions = getTodaySessions();
@@ -48,13 +43,7 @@ export default function DashboardScreen({ onAddSession, onEditSession }: Props =
           </View>
           <TouchableOpacity 
             style={styles.addButton}
-            onPress={() => {
-              if (onAddSession) {
-                onAddSession();
-              } else if (router) {
-                router.push({ pathname: '/add-session' } as any);
-              }
-            }}
+            onPress={() => router.push('/add-session')}
           >
             <Plus size={24} color="#fff" />
           </TouchableOpacity>
@@ -97,11 +86,7 @@ export default function DashboardScreen({ onAddSession, onEditSession }: Props =
         <View style={styles.section}>
           <View style={styles.sectionHeader}>
             <Text style={styles.sectionTitle}>Recent Training</Text>
-            <TouchableOpacity onPress={() => {
-              if (router) {
-                router.push({ pathname: '/log' } as any);
-              }
-            }}>
+            <TouchableOpacity onPress={() => router.push('/log')}>
               <Text style={styles.seeAll}>See all</Text>
             </TouchableOpacity>
           </View>
@@ -111,13 +96,7 @@ export default function DashboardScreen({ onAddSession, onEditSession }: Props =
               <SessionCard
                 key={session.id}
                 session={session}
-                onEdit={() => {
-                  if (onEditSession) {
-                    onEditSession(session.id);
-                  } else if (router) {
-                    router.push({ pathname: '/edit-session', params: { id: session.id } } as any);
-                  }
-                }}
+                onEdit={() => router.push(`/edit-session?id=${session.id}`)}
               />
             ))
           ) : (
@@ -125,13 +104,7 @@ export default function DashboardScreen({ onAddSession, onEditSession }: Props =
               <Text style={styles.emptyText}>No training sessions yet</Text>
               <TouchableOpacity 
                 style={styles.emptyButton}
-                onPress={() => {
-                  if (onAddSession) {
-                    onAddSession();
-                  } else if (router) {
-                    router.push({ pathname: '/add-session' } as any);
-                  }
-                }}
+                onPress={() => router.push('/add-session')}
               >
                 <Text style={styles.emptyButtonText}>Log your first session</Text>
               </TouchableOpacity>

@@ -1,6 +1,6 @@
 import createContextHook from '@nkzw/create-context-hook';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { useState, useEffect, useRef, useCallback, useMemo } from 'react';
+import { useState, useEffect, useRef, useCallback } from 'react';
 import { Platform } from 'react-native';
 import { TimerSettings } from '@/types/training';
 
@@ -19,35 +19,34 @@ export const [TimerProvider, useTimer] = createContextHook(() => {
   const [isPaused, setIsPaused] = useState(false);
   const [soundsEnabled, setSoundsEnabled] = useState(true);
 
-  // All useRef calls must come before useCallback calls
   const intervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
-  const audioContext = useRef<AudioContext | null>(null);
+  const audioContextRef = useRef<AudioContext | null>(null);
 
   const playWebBeep = useCallback((frequency: number, duration: number, volume: number = 0.3) => {
     if (Platform.OS !== 'web' || !soundsEnabled) return;
     
     try {
-      if (!audioContext.current && typeof window !== 'undefined') {
-        audioContext.current = new (window.AudioContext || (window as any).webkitAudioContext)();
+      if (!audioContextRef.current && typeof window !== 'undefined') {
+        audioContextRef.current = new (window.AudioContext || (window as any).webkitAudioContext)();
       }
       
-      if (!audioContext.current) return;
+      if (!audioContextRef.current) return;
       
-      const oscillator = audioContext.current.createOscillator();
-      const gainNode = audioContext.current.createGain();
+      const oscillator = audioContextRef.current.createOscillator();
+      const gainNode = audioContextRef.current.createGain();
       
       oscillator.connect(gainNode);
-      gainNode.connect(audioContext.current.destination);
+      gainNode.connect(audioContextRef.current.destination);
       
-      oscillator.frequency.setValueAtTime(frequency, audioContext.current.currentTime);
-      oscillator.type = 'sine';
+      oscillator.frequency.setValueAtTime(frequency, audioContextRef.current.currentTime);
+      oscillator.type = 'sine' as const;
       
-      gainNode.gain.setValueAtTime(0, audioContext.current.currentTime);
-      gainNode.gain.linearRampToValueAtTime(volume, audioContext.current.currentTime + 0.01);
-      gainNode.gain.exponentialRampToValueAtTime(0.001, audioContext.current.currentTime + duration);
+      gainNode.gain.setValueAtTime(0, audioContextRef.current.currentTime);
+      gainNode.gain.linearRampToValueAtTime(volume, audioContextRef.current.currentTime + 0.01);
+      gainNode.gain.exponentialRampToValueAtTime(0.001, audioContextRef.current.currentTime + duration);
       
-      oscillator.start(audioContext.current.currentTime);
-      oscillator.stop(audioContext.current.currentTime + duration);
+      oscillator.start(audioContextRef.current.currentTime);
+      oscillator.stop(audioContextRef.current.currentTime + duration);
     } catch (error) {
       console.log('Error playing web beep:', error);
     }
@@ -198,7 +197,7 @@ export const [TimerProvider, useTimer] = createContextHook(() => {
     setTimeRemaining(settings.roundTime);
   }, [settings.roundTime]);
 
-  return useMemo(() => ({
+  return {
     settings,
     updateSettings,
     currentRound,
@@ -213,19 +212,5 @@ export const [TimerProvider, useTimer] = createContextHook(() => {
     resumeTimer,
     stopTimer,
     resetTimer,
-  }), [
-    settings,
-    updateSettings,
-    currentRound,
-    timeRemaining,
-    isResting,
-    isRunning,
-    isPaused,
-    soundsEnabled,
-    startTimer,
-    pauseTimer,
-    resumeTimer,
-    stopTimer,
-    resetTimer,
-  ]);
+  };
 });

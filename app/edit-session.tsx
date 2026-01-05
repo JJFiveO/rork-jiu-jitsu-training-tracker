@@ -7,15 +7,10 @@ import { useTraining } from '@/hooks/training-context';
 import { TrainingSession } from '@/types/training';
 import * as Haptics from 'expo-haptics';
 
-type Props = {
-  sessionId?: string;
-  onClose?: () => void;
-};
-
-export default function EditSessionScreen({ sessionId, onClose }: Props = {}) {
+export default function EditSessionScreen() {
   const router = useRouter();
   const params = useLocalSearchParams();
-  const id = sessionId || params.id;
+  const id = params.id as string;
   const { sessions, updateSession } = useTraining();
 
   const session = sessions.find(s => s.id === id);
@@ -70,11 +65,7 @@ export default function EditSessionScreen({ sessionId, onClose }: Props = {}) {
       Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
     }
 
-    if (onClose) {
-      onClose();
-    } else {
-      router.back();
-    }
+    router.back();
   };
 
   if (!session) {

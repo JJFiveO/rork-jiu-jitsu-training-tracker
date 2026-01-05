@@ -1,7 +1,7 @@
 export interface TrainingSession {
   id: string;
   date: string;
-  duration: number; // in minutes
+  duration: number;
   type: 'gi' | 'no-gi' | 'open-mat' | 'competition' | 'drilling' | 'private';
   notes: string;
   techniques?: string[];
@@ -18,6 +18,6 @@ export interface TrainingStats {
 
 export interface TimerSettings {
   rounds: number;
-  roundTime: number; // in seconds
-  restTime: number; // in seconds
+  roundTime: number;
+  restTime: number;
 }
