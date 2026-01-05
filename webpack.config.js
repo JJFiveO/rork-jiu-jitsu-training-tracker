@@ -1,10 +1,17 @@
-const path = require('path');
-const HtmlWebpackPlugin = require('html-webpack-plugin');
-const { DefinePlugin } = require('webpack');
+const createExpoWebpackConfigAsync = require('@expo/webpack-config');
 
+module.exports = async function (env, argv) {
+  const config = await createExpoWebpackConfigAsync(env, argv);
+  
+  config.output.publicPath = process.env.NODE_ENV === 'production' ? '/rork-jiu-jitsu-training-tracker/' : './';
+  
+  return config;
+};
+
+/* Old custom config - using Expo's built-in config instead
 module.exports = {
   mode: 'production',
-  entry: './index.web.js',
+  entry: './node_modules/expo-router/entry',
   output: {
     path: path.resolve(__dirname, 'dist'),
     filename: 'index.js',
@@ -104,3 +111,4 @@ module.exports = {
     maxEntrypointSize: 1000000,
   },
 };
+*/
