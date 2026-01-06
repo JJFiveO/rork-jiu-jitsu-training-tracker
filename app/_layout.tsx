@@ -11,34 +11,6 @@ SplashScreen.preventAutoHideAsync();
 
 const queryClient = new QueryClient();
 
-function RootLayoutNav() {
-  return (
-    <Stack screenOptions={{ 
-      headerBackTitle: "Back",
-      headerStyle: {
-        backgroundColor: '#0d0d0d',
-      },
-      headerTintColor: '#fff',
-    }}>
-      <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-      <Stack.Screen 
-        name="add-session" 
-        options={{ 
-          title: "Log Training",
-          presentation: "modal",
-        }} 
-      />
-      <Stack.Screen 
-        name="edit-session" 
-        options={{ 
-          title: "Edit Session",
-          presentation: "modal",
-        }} 
-      />
-    </Stack>
-  );
-}
-
 export default function RootLayout() {
   const [isReady, setIsReady] = useState(false);
 
@@ -50,7 +22,7 @@ export default function RootLayout() {
         console.warn(e);
       } finally {
         setIsReady(true);
-        SplashScreen.hideAsync();
+        await SplashScreen.hideAsync();
       }
     }
 
@@ -70,7 +42,29 @@ export default function RootLayout() {
       <QueryClientProvider client={queryClient}>
         <TrainingProvider>
           <TimerProvider>
-            <RootLayoutNav />
+            <Stack screenOptions={{ 
+              headerBackTitle: "Back",
+              headerStyle: {
+                backgroundColor: '#0d0d0d',
+              },
+              headerTintColor: '#fff',
+            }}>
+              <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+              <Stack.Screen 
+                name="add-session" 
+                options={{ 
+                  title: "Log Training",
+                  presentation: "modal",
+                }} 
+              />
+              <Stack.Screen 
+                name="edit-session" 
+                options={{ 
+                  title: "Edit Session",
+                  presentation: "modal",
+                }} 
+              />
+            </Stack>
           </TimerProvider>
         </TrainingProvider>
       </QueryClientProvider>
