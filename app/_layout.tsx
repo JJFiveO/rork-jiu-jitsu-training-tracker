@@ -1,7 +1,8 @@
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { Stack } from "expo-router";
 import * as SplashScreen from "expo-splash-screen";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
+import { View, ActivityIndicator } from "react-native";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { TrainingProvider } from "@/hooks/training-context";
 import { TimerProvider } from "@/hooks/timer-context";
@@ -39,9 +40,30 @@ function RootLayoutNav() {
 }
 
 export default function RootLayout() {
+  const [isReady, setIsReady] = useState(false);
+
   useEffect(() => {
-    SplashScreen.hideAsync();
+    async function prepare() {
+      try {
+        await new Promise(resolve => setTimeout(resolve, 100));
+      } catch (e) {
+        console.warn(e);
+      } finally {
+        setIsReady(true);
+        SplashScreen.hideAsync();
+      }
+    }
+
+    prepare();
   }, []);
+
+  if (!isReady) {
+    return (
+      <View style={{ flex: 1, backgroundColor: '#0d0d0d', justifyContent: 'center', alignItems: 'center' }}>
+        <ActivityIndicator size="large" color="#07a7f7" />
+      </View>
+    );
+  }
 
   return (
     <GestureHandlerRootView style={{ flex: 1, backgroundColor: '#0d0d0d' }}>
