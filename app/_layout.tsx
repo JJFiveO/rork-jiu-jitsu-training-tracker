@@ -16,46 +16,48 @@ const queryClient = new QueryClient({
   },
 });
 
-function RootLayoutNav() {
+function Providers({ children }: { children: React.ReactNode }) {
+  return (
+    <QueryClientProvider client={queryClient}>
+      <TrainingProvider>
+        <TimerProvider>
+          {children}
+        </TimerProvider>
+      </TrainingProvider>
+    </QueryClientProvider>
+  );
+}
+
+export default function RootLayout() {
   useEffect(() => {
     SplashScreen.hideAsync().catch(console.warn);
   }, []);
 
   return (
-    <Stack screenOptions={{ 
-      headerBackTitle: "Back",
-      headerStyle: {
-        backgroundColor: '#0d0d0d',
-      },
-      headerTintColor: '#fff',
-    }}>
-      <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-      <Stack.Screen 
-        name="add-session" 
-        options={{ 
-          title: "Log Training",
-          presentation: "modal",
-        }} 
-      />
-      <Stack.Screen 
-        name="edit-session" 
-        options={{ 
-          title: "Edit Session",
-          presentation: "modal",
-        }} 
-      />
-    </Stack>
-  );
-}
-
-export default function RootLayout() {
-  return (
-    <QueryClientProvider client={queryClient}>
-      <TrainingProvider>
-        <TimerProvider>
-          <RootLayoutNav />
-        </TimerProvider>
-      </TrainingProvider>
-    </QueryClientProvider>
+    <Providers>
+      <Stack screenOptions={{ 
+        headerBackTitle: "Back",
+        headerStyle: {
+          backgroundColor: '#0d0d0d',
+        },
+        headerTintColor: '#fff',
+      }}>
+        <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+        <Stack.Screen 
+          name="add-session" 
+          options={{ 
+            title: "Log Training",
+            presentation: "modal",
+          }} 
+        />
+        <Stack.Screen 
+          name="edit-session" 
+          options={{ 
+            title: "Edit Session",
+            presentation: "modal",
+          }} 
+        />
+      </Stack>
+    </Providers>
   );
 }
