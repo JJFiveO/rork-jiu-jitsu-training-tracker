@@ -1,5 +1,5 @@
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { Stack } from "expo-router";
+import { Slot } from "expo-router";
 import * as SplashScreen from "expo-splash-screen";
 import React, { useEffect } from "react";
 import { TrainingProvider } from "@/hooks/training-context";
@@ -16,48 +16,18 @@ const queryClient = new QueryClient({
   },
 });
 
-function Providers({ children }: { children: React.ReactNode }) {
-  return (
-    <QueryClientProvider client={queryClient}>
-      <TrainingProvider>
-        <TimerProvider>
-          {children}
-        </TimerProvider>
-      </TrainingProvider>
-    </QueryClientProvider>
-  );
-}
-
 export default function RootLayout() {
   useEffect(() => {
     SplashScreen.hideAsync().catch(console.warn);
   }, []);
 
   return (
-    <Providers>
-      <Stack screenOptions={{ 
-        headerBackTitle: "Back",
-        headerStyle: {
-          backgroundColor: '#0d0d0d',
-        },
-        headerTintColor: '#fff',
-      }}>
-        <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-        <Stack.Screen 
-          name="add-session" 
-          options={{ 
-            title: "Log Training",
-            presentation: "modal",
-          }} 
-        />
-        <Stack.Screen 
-          name="edit-session" 
-          options={{ 
-            title: "Edit Session",
-            presentation: "modal",
-          }} 
-        />
-      </Stack>
-    </Providers>
+    <QueryClientProvider client={queryClient}>
+      <TrainingProvider>
+        <TimerProvider>
+          <Slot />
+        </TimerProvider>
+      </TrainingProvider>
+    </QueryClientProvider>
   );
 }
